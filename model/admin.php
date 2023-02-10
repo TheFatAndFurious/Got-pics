@@ -55,7 +55,26 @@
             $this->setMdpAdmin(password_hash($this->getMdpAdmin()));
         }
 
+        //creation d'un nouvel admin
 
+        public function createAdmin($bdd, $name_admin, $pseudo_admin, $mdp_admin) {
+            try {
+                //requete d'ajout d'un admin a la BDD
+                $req = $bdd->prepare('INSERT INTO admin(name_admin, pseudo_admin, mdp_admin) VALUES(:name_admin, :pseudo_admin, :pseudo_admin)');
+                $req->execute(array(
+                    'name_admin' => $name_admin,
+                    'pseudo_amin' => $pseudo_admin,
+                    'mdp_admin' => $mdp_admin
+                ));
+            }
+            catch(Exception $e) {
+                die('Erreur : '.$e->getMessage());
+            }
+
+            }
     }
+
+
+    
 
 ?>
