@@ -71,7 +71,32 @@
                 die('Erreur : '.$e->getMessage());
             }
 
+        }
+
+        //verification de l'existence d'un utilisateur dans la BDD
+
+        public function showUser($bdd) {
+            //recuperation de la valeur de l'objet
+            $pseudo_admin = $this->getPseudoAdmin();
+            try {
+                //requete pour stocker le contenu de toute la table
+                $reponse = $bdd->query('SELECT (name_admin, pseudo_admin, mdp_admin) FROM admin WHERE pseudo_admin = "'.$pseudo_admin.'" LIMIT 1');
+                //parcours du resultat de la requete:
+                while($donnees = $reponse->fetch()) {
+                    //retourne $donnees
+                    if($pseudo_admin == $donnees['pseudo_admin']) {
+                        //retourne true si il existe
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
             }
+            catch(Exception $e) {
+                die('Erreur : '.$e->getMessage());
+            }
+        }
     }
 
 
