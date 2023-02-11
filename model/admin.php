@@ -97,6 +97,36 @@
                 die('Erreur : '.$e->getMessage());
             }
         }
+
+        //methode pour generer les superglobales avec les valeurs d'attribut d'un admin
+        public function generateSuperGlobale($bdd) {
+            //recuperation des valeurs de l'objet:
+            $pseudo_admin = $this->getPseudoAdmin();
+            $mdp_admin = $this->getMdpAdmin();
+            try {
+                //requete pour stocker le contenu de toute la table dans le tableau $reponse
+                $reponse = $bdd->query('SELECT * FROM admin WHERE pseudo_admin = "'.$pseudo_admin.'" AND mdp_admin = "'.$mdp_admin.'" LIMIT 1');
+                //parcours du resultat de la requete:
+                while($donnees = $reponse->fetch()) {
+                    //return $donnees['mdp_admin']
+                    if($pseudo_admin == $donnees['pseudo_admin'] AND $mdp_admin == $donnees['mdp_admin']) {
+                        $id = $donnees['id_admin'];
+                        $name = $donnees['name_admin'];
+                        $pseudo = $donnees['pseudo_admin'];
+                        $mdp = $donnees['mdp_admin'];
+                        //creation des superglobales $SESSION
+                        $_SESSION['idAdmin'] = $id;
+                        $_SESSION['nameAdmin'] = $name;
+                        $_SESSION['pseudoAdmin'] = $pseudo;
+                        $_SESSION['mdpAdmin'] = $mdp;
+                        $_SESSION['connected'] = true;
+                    }
+                }
+            }
+            catch(Exception $e) {
+                die('Erreur : '.$e->getMessage());
+            }
+        }
     }
 
 
