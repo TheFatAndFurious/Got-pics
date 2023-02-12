@@ -127,6 +127,31 @@
                 die('Erreur : '.$e->getMessage());
             }
         }
+
+        //methode pour tester si l'admin est connecte
+        public function adminConnected($bdd) {
+            //recuperation des valeurs de l'objet
+            $pseudo_admin = $this->getPseudoAdmin();
+            $mdp_admin = $this->getMdpAdmin();
+            try {
+                //requete pour stocker le contenmu de toute la table dans le tableau $reponse
+                $reponse = $bdd->query('SELECT * FROM admin WHERE pseudo_admin = "'.$pseudo_admin.'" AND mdp_admin = "'.$mdp_admin.'" LIMIT 1');
+                //parcours le resultat de la requete
+                while($donnees = $reponse->fetch()) {
+                    //retourne $donnees['mdp_admin];
+                    if($pseudo_admin == $donnees['pseudo_admin'] AND $mdp_admin == $donnees['mdp_admin']) {
+                        //retourne true si il existe
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+            catch(Exception $e) {
+                die('Erreur: ' .$e->getMesage());
+            }
+        }
     }
 
 
